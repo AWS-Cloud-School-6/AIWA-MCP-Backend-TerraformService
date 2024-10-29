@@ -31,7 +31,7 @@ ENV PATH=${GRADLE_HOME}/bin:${PATH}
 WORKDIR /app
 
 # GitHub Actions에서 빌드된 JAR 파일만 복사
-COPY build/libs/AIWA-MCP-Backend-TerraformService-0.0.1-SNAPSHOT.jar /app/AIWA-MCP-Backend-TerraformService-0.0.1-SNAPSHOT.jar
+COPY build/libs/McpBackend-Terraform-0.0.1-SNAPSHOT.jar /app/McpBackend-Terraform-0.0.1-SNAPSHOT.jar
 
 # 기본 셸을 bash로 설정
 SHELL ["/bin/bash", "-c"]
