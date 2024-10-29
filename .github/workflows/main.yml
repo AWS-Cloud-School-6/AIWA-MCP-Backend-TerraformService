@@ -45,12 +45,12 @@ jobs:
         run: |
           aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/aiwa-project/terraform"
 
-      # 3. ECR 리포지토리에 푸시할 이미지 태그 생성
+     # 3. ECR 리포지토리에 푸시할 이미지 태그 생성
       - name: Build Docker Image with AWS CLI and Terraform
         run: |
-          docker build -t "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/aiwa-project/terraform/terraform-app:latest" .
-
+          docker build -t "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/aiwa-project/terraform:latest" .
+      
       # 4. ECR로 Docker 이미지 푸시
       - name: Push Docker Image to Amazon ECR
         run: |
-          docker push "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/aiwa-project/terraform/terraform-app:latest"
+          docker push "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/aiwa-project/terraform:latest"
