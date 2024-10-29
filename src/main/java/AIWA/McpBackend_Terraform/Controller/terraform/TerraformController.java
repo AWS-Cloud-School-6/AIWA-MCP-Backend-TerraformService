@@ -1,4 +1,4 @@
-package Controller;
+package AIWA.McpBackend_Terraform.Controller.terraform;
 
 import lombok.Getter;
 import lombok.Setter;
