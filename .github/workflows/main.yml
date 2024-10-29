@@ -1,0 +1,52 @@
+name: Build Spring Application and Push to ECR
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 1. JDK 설치 후 Spring 애플리케이션 빌드
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+
+      - name: Build Spring Application with Secrets
+        #        env:
+        #          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        #          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          ./gradlew build -x test
+
+      # 2. AWS CLI 로그인 및 ECR 리포지토리 생성
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.INFRA_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.INFRA_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2  # ECR 리포지토리가 있는 AWS 리전을 지정하세요.
+
+      - name: Log in to Amazon ECR
+        run: |
+          aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/aiwa-project/terraform"
+
+      # 3. ECR 리포지토리에 푸시할 이미지 태그 생성
+      - name: Build Docker Image with AWS CLI and Terraform
+        run: |
+          docker build -t "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/aiwa-project/terraform/terraform-app:latest" .
+
+      # 4. ECR로 Docker 이미지 푸시
+      - name: Push Docker Image to Amazon ECR
+        run: |
+          docker push "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/aiwa-project/terraform/terraform-app:latest"
