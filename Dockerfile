@@ -41,6 +41,3 @@ COPY build/libs/McpBackend-Terraform-0.0.1-SNAPSHOT.jar /app/terraform.jar
 
 # 11. JAR 파일에 실행 권한 부여
 RUN chmod +x /app/terraform.jar
-
-# 12. 컨테이너 시작 시 실행할 명령어
-CMD ["sh", "-c", "java -jar /app/terraform.jar"]
