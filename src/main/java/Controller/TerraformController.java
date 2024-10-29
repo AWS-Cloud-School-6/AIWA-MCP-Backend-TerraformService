@@ -9,7 +9,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 @RestController
-@RequestMapping("/api/terraform")
+@RequestMapping("/terraform/api/terraform")
 public class TerraformController {
 
     /**
