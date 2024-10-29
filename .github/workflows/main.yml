@@ -12,6 +12,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    outputs:
+      image_tag: ${{ steps.get_version.outputs.version }}
+      
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -43,14 +46,28 @@ jobs:
 
       - name: Log in to Amazon ECR
         run: |
-          aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/aiwa-project/terraform"
-
+          aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com"
+    
+     # 3. 이미지 태그 생성 (날짜-시간 형식)
+      - name: Generate image tag
+        id: get_version
+        run: echo "version=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
+        
      # 3. ECR 리포지토리에 푸시할 이미지 태그 생성
       - name: Build Docker Image with AWS CLI and Terraform
+        env:
+          ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com
+          ECR_REPOSITORY: aiwa-project/terraform
+          IMAGE_TAG: ${{ steps.get_version.outputs.version }}
         run: |
-          docker build -t "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/aiwa-project/terraform:latest" .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
       
       # 4. ECR로 Docker 이미지 푸시
       - name: Push Docker Image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com
+          ECR_REPOSITORY: aiwa-project/terraform
+          IMAGE_TAG: ${{ steps.get_version.outputs.version }}
         run: |
-          docker push "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/aiwa-project/terraform:latest"
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
