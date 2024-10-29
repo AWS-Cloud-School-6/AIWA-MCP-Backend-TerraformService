@@ -16,11 +16,15 @@ RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/s
 # Amazon Corretto JDK 17 설치
 RUN yum install -y java-17-amazon-corretto-devel
 
-# Gradle 설치
-RUN wget https://services.gradle.org/distributions/gradle-7.6-bin.zip && \
+# wget 설치 후 Gradle 다운로드 및 설정
+RUN apt-get update && apt-get install -y wget unzip && \
+    wget https://services.gradle.org/distributions/gradle-7.6-bin.zip && \
     unzip gradle-7.6-bin.zip -d /opt && \
     ln -s /opt/gradle-7.6 /opt/gradle && \
     rm gradle-7.6-bin.zip
+
+# Gradle PATH 설정
+ENV PATH="/opt/gradle/bin:${PATH}"
 
 # 환경 변수 설정
 ENV JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto
