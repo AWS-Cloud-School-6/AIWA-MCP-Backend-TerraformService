@@ -32,7 +32,6 @@ jobs:
         #          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           ./gradlew clean bootJar
-          ls build/libs
 
       # 2. AWS CLI 로그인 및 ECR 리포지토리 생성
       - name: Configure AWS Credentials
