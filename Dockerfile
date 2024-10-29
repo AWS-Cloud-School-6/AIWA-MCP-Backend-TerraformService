@@ -36,7 +36,7 @@ ENV PATH=${GRADLE_HOME}/bin:${PATH}
 WORKDIR /app
 
 # GitHub Actions에서 빌드된 JAR 파일만 복사
-COPY build/libs/McpBackend-Terraform-0.0.1-SNAPSHOT.jar /app/app.jar
+COPY build/libs/McpBackend-Terraform-0.0.1-SNAPSHOT.jar McpBackend-Terraform-0.0.1-SNAPSHOT.jar
 
 # 기본 셸을 bash로 설정
 SHELL ["/bin/bash", "-c"]
@@ -45,4 +45,4 @@ SHELL ["/bin/bash", "-c"]
 CMD ["/bin/bash"]
 
 # 6. 애플리케이션을 실행할 명령어
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "McpBackend-Terraform-0.0.1-SNAPSHOT.jar"]
