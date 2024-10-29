@@ -39,4 +39,4 @@ WORKDIR /app
 COPY build/libs/McpBackend-Terraform-0.0.1-SNAPSHOT.jar /app/terraform.jar
 
 # 컨테이너 시작 시 실행할 명령어
-ENTRYPOINT ["java", "-jar", "/app/terraform.jar"]
+CMD ["java", "-jar", "/app/terraform.jar"]
