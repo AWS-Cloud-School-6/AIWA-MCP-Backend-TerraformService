@@ -33,10 +33,10 @@ ENV GRADLE_HOME=/opt/gradle
 ENV PATH=${GRADLE_HOME}/bin:${PATH}
 
 # # 작업 디렉토리 생성
-# WORKDIR /app
+WORKDIR /app
 
 # GitHub Actions에서 빌드된 JAR 파일만 복사
-COPY build/libs/McpBackend-Terraform-0.0.1-SNAPSHOT.jar /app.jar
+COPY build/libs/McpBackend-Terraform-0.0.1-SNAPSHOT.jar /app/terraform.jar
 
 # 컨테이너 시작 시 실행할 명령어
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/terraform.jar"]
