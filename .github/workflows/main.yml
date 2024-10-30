@@ -96,7 +96,7 @@ jobs:
             echo "No changes to commit in values.yaml"
           else
             git commit -m "Update image tag to ${{ steps.get_version.outputs.version }}"
-            git push || { echo "Failed to push changes"; exit 1; }
+            git push || { echo "Failed to push changes"; exit 2; }
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
