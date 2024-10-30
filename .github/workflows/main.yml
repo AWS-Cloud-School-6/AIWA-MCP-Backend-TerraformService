@@ -3,7 +3,7 @@ name: Build Spring Application and Push to ECR
 on:
   push:
     # paths-ignore:
-    #   - ".github/workflows/**" 
+    #   - ".github/workflows/**" 1
       
     branches:
       - main
