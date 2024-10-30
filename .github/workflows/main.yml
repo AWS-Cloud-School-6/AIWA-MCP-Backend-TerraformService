@@ -2,8 +2,8 @@ name: Build Spring Application and Push to ECR
 
 on:
   push:
-    # paths-ignore:
-    #   - ".github/workflows/**" 
+    paths-ignore:
+      - ".github/workflows/**" 
       
     branches:
       - main
@@ -78,7 +78,7 @@ jobs:
         with:
           repository: AWS-Cloud-School-6/AIWA-MCP-Helm # Helm 차트 저장소 URL로 변경하세요
           path: AIWA-MCP-Helm
-          token: ${{ secrets.PAT_AIWA_APP_TOKEN }} # 개인 액세스 토큰이 필요할 수 있습니다
+          token: ${{ secrets.PAT_AIWA_TERRA_TOKEN }} # 개인 액세스 토큰이 필요할 수 있습니다
 
       # 7. Helm 차트 업데이트
       - name: Update Helm chart
